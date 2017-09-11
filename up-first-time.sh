@@ -39,7 +39,7 @@ if [ -d $workspace ]; then
 
 	cd $dot_files/provision
 
-	ansible-playbook -vvv -K -i hosts $playbook --vault-password-file ../../linux-desktop-private/vaultpass.txt
+	ansible-playbook -vvv -K -i hosts $playbook --ask-vault-pass
 
 else
 	echo "$workspace does not exist. WTF?"

@@ -1,6 +1,25 @@
 ---
+# Ansible does not yet fully suppoty Ubuntu derived distros
+# therefore some roles fail, e.g. when adding repositories
+- set_fact:
+    ansible_os_family: Debian
+    ansible_distribution: ubuntu
+    ansible_distribution_release: xenial
+    ansible_lsb:
+      id: ubuntu
+      codename: xenial
+
+# Safe upgrade packagess
 - include: upgrade.yml
 
+# Basic package install
+- include: core_packages.yml
+  sudo: true
+
+# Gnome config - wallpaper
+- include: _gconf.yml
+
+# Add user to sudoers
 - name: Sudoers | update sudoers file and validate
   lineinfile: "dest=/etc/sudoers
               insertafter=EOF
@@ -8,16 +27,3 @@
               regexp='^{{ username }}'
               state=present"
   sudo: true
-
-- include: core_packages.yml
-  sudo: true
-
-- include: security.yml
-  sudo: true
-
-- include: vim.yml
-- include: _gconf.yml
-- include: rvm.yml
-- include: nodejs.yml
-- include: atom_editor.yml
-- include: containers.yml

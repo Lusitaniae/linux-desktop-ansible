@@ -1,15 +1,28 @@
 ---
 - hosts: 127.0.0.1
   connection: local
-  user: brian
-
-  vars:
-    username: "brian"
-
+  sudo: yes
+  
   roles:
     - common
-    - ntp
-    - dotfiles
-    - googlechrome
+    - kosssi.gitconfig
 
-- include: ../../linux-desktop-private/playbook.yml
+    # Web Server
+    - jdauphant.nginx
+
+    # Languages and package managers
+    - geerlingguy.nodejs
+    - geerlingguy.php
+    - geerlingguy.composer
+    - rvm_io.ruby
+    - joshualund.golang
+
+    # Desktop software
+    - gantsign.atom
+    - gantsign.gitkraken
+    - cmprescott.chrome
+
+    # Containers
+    - angstwad.docker_ubuntu
+    - gantsign.kubernetes
+    #- geerlingguy.docker

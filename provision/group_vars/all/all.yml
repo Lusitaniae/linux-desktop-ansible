@@ -1,0 +1,102 @@
+---
+# General
+my_name: "{{ vault_my_name }}"
+my_email: "{{ vault_my_email }}"
+
+# Computer username
+username: "{{ vault_my_username }}"
+
+npm_config_prefix: "~/.npm-global"
+rvm1_user: "{{ username }}"
+composer_keep_updated: true
+composer_home_owner: "{{ username }}"
+composer_home_group: "{{ username }}"
+
+
+# Host Blacklist Settings
+hosts_whitelist:
+  # Linkedin
+  - 'www.linkedin.com'
+  - 'static.licdn.com'
+  - 'media.licdn.com'
+  # Facebook
+  - 'code.facebook.com'
+  # Twitter
+  - 'www.twitter.com'
+  - 'twitter.com'
+  - 'abs.twimg.com'
+  - 'pbs.twimg.com'
+  # Instagram
+  - 'igcdn-photos-aa.akamaihd.net'
+  - 'igcdn-photos-ba.akamaihd.net'
+  - 'igcdn-photos-ca.akamaihd.net'
+  - 'igcdn-photos-da.akamaihd.net'
+  - 'igcdn-photos-ea.akamaihd.net'
+  - 'igcdn-photos-fa.akamaihd.net'
+  - 'igcdn-photos-ga.akamaihd.net'
+  - 'igcdn-photos-ha.akamaihd.net'
+  - 'instagram.com'
+  - 'scontent-iad3-1.cdninstagram.com'
+  - 'scontent.cdninstagram.com'
+
+# Git settings
+git_config:
+  user:
+    name: "{{ my_name}}"
+    email: "{{ my_email }}"
+  credential:
+    helper: cache --timeout=18000
+  core:
+    editor: nano
+    excludesfile: "~/.gitexcludesfile"
+  push:
+    default: current
+
+git_ignore:
+  - "*.log"
+  - ".vagrant"
+
+
+# Atom Settings
+users:
+  - username: "{{ username }}"
+    atom_packages:
+      # linter and its dependencies
+      - linter
+      - linter-ui-default
+      - intentions
+      - busy-signal
+      - atom-beautify
+      - file-icons
+      - atom-autocomplete-php
+      - linter-php
+      - php-cs-fixer
+    atom_config:
+      "*":
+        core:
+          projectHome: "/home/{{ username }}/workspace"
+          telemetryConsent: "limited"
+          fontSize: 15
+        editor:
+          showInvisibles: true
+        exception-reporting:
+          userId: "d431c188-932f-49b1-b2ef-3b05362b4bb5"
+        welcome:
+          showOnStartup: false
+
+
+# PHP Settings
+php_packages:
+    - php7.0-fpm
+    - php7.0-json
+    - php7.0-mysql
+    - php7.0-curl
+    - php7.0-mcrypt
+    - php7.0-cli
+    - php7.0-common
+    - php7.0-zip
+    - php7.0-gd
+    - php7.0-mbstring
+php_webserver_daemon: nginx
+php_enable_php_fpm: true
+php_use_managed_ini: false
