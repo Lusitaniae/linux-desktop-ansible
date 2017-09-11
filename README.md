@@ -1,59 +1,25 @@
 # linux-desktop-ansible
 
-My Ansible configuration for a Linux Mint Desktop
+Ansible configuration for a development environment based on Linux Mint.
 
-## Setup Base Linux Mint 17 Cinnamon System
-
-In VMWare Fusion, Pick Linux > Ubuntu with LinuxMint 17 ISO
-
-Choose "Customize Settings" button:
-
-        Set Memory to something bigger than default
-
-Boot into Linux.
-
-Double-click on "Install Linux Mint" DVD image on Desktop to install.
-
-* During install steps, you may want to choose the option to encrypt your hard-drive, or when you create your user you can choose to encrypt just your home folder.
-
-Restart when prompted.
-
-Install VMWare Tools via menu:
-
-* Extract file, then run install script. Accept all default parameters.
-
-* Restart virtual machine
-
-In Menu > System Settings:
-
-* Choose `Themes` and pick Cinnamon. Then pick a nice background image.
 
 ## Ansible Setup
-
-Setup local ssh key:
-
-        ssh-keygen -t rsa
-
-Upload public key (`~/.ssh/id_rsa.pub`) to Github to clone private repos.
-Upload public key (`~/.ssh/id_rsa.pub`) to Bitbucket to clone private repos.
 
 Bootstrap system with:
 
         cd ~
-        wget https://raw.githubusercontent.com/briangershon/linux-desktop-ansible/master/install.sh
+        wget https://raw.githubusercontent.com/Lusitaniae/linux-desktop-ansible/master/install.sh
         chmod u+x install.sh
         ./install.sh
 
-Add your secret Ansible Vault password which should never be checked into source control:
+Update vault encrypted variables
 
-        vim ~/workspace/linux-desktop-private/vaultpass.txt
-        sudo chmod 600 ~/workspace/linux-desktop-private/vaultpass.txt
+        cd ~/workspace/linux-desktop-ansible
 
-It's just a one-line text file with a password in it, so you don't have to re-enter password each time you run Ansible.
+        # check which encrypted variables do you need
+        cat provision/group_vars/all/vault.example
 
-Then you can encrypt a file of secrets and include that with `include_vars` to feed your templates.
-
-To run `ansible-vault` commands, call the `./ansible-vault` script in `~/workspace/linux-desktop-ansible`. e.g. `ansible-vault edit <file>`
+        ./ansible-vault edit provision/group_vars/all/vault.yml
 
 ## Run Ansible for Realz
 
@@ -65,31 +31,35 @@ To run `ansible-vault` commands, call the `./ansible-vault` script in `~/workspa
         # on subsequent times, use this (since we've added our user to sudo and don't need to prompt anymore)
         ./up.sh
 
-## VMWare Fusion OSX Key Mappings for Linux Mint (Ubuntu)
 
-These are mappings in VMWare Fusion Preferences > Keyboard & Mouse.
+## Installed Software
 
-I started with using "Default" profile (not Mac profile), then added in these key mappings:
+List of included roles from playbook:
 
-To support Apple-Tab to move between applications:
+        - kosssi.gitconfig
 
-* I wasn't able to get this to work via enabling Apple-T and changing mapping to Ctrl-Alt-Tab. Even after also turning off "Enable Mac OS Host Shortcuts".
+        # Web Server
+        - jdauphant.nginx
 
-* Though `Option-Tab` by default does the equivalent. And still allows you to use the Mac OS Host shortcuts.
+        # Languages and package managers
+        - geerlingguy.nodejs
+        - geerlingguy.php
+        - geerlingguy.composer
+        - rvm_io.ruby
+        - joshualund.golang
 
-Map `Apple` to `Ctrl` to support Apple-[ and Apple-] for outdenting/indenting in Atom editor.
+        # Desktop software
+        - gantsign.atom
+        - gantsign.gitkraken
+        - cmprescott.chrome
 
-To support Atom editor (and begin/end line in Terminal) move to home/end of line and disable Cinnamon "Push Tile Left/Right"
+        # Containers
+        - angstwad.docker_ubuntu
+        - gantsign.kubernetes
 
-* `Apple-Right` -> `End`
-* `Apple-Left` -> `Home`
-* `Shift-Apple-Left` -> `Shift-Home`    # supports select to beginning of line
-* `Shift-Apple-Right` -> `Shift-End`    # supports select to end of a line
 
-I discovered that Apple key by itself will bring up Mint Menu.
+Check both playbook.yml and roles/common/tasks/core_packages to see in detail everything that is installed.
 
 ## Inspiration
 
-* Concept of running Ansible locally for installing desktop machines and some nice recipes: <http://www.compoundtheory.com/provision-your-local-machines/> and `install.sh` and `up.sh`
-
-* Ansible desktop recipes: <https://github.com/kalos/ansible-desktop>
+* https://github.com/briangershon/linux-desktop-ansible
